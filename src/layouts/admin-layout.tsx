@@ -21,7 +21,22 @@ export default function AdminLayout(): JSX.Element {
   return (
     <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="logo" />
+        <div
+          style={{ width: "100%", cursor: "pointer" }}
+          onClick={() => navigate("/")}
+        >
+          <p
+            style={{
+              width: "90%",
+              margin: "auto",
+              padding: "10px 0",
+              color: "white",
+              fontSize: "20px",
+            }}
+          >
+            Trở về giao diện người dùng
+          </p>
+        </div>
         <Menu
           theme="dark"
           mode="inline"
