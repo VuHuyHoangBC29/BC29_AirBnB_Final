@@ -1,0 +1,14 @@
+#profileInfoForm {
+  .intro {
+    p {
+      font-weight: bolder;
+      font-size: 30px;
+    }
+
+    a {
+      &:hover {
+        color: #dd3675;
+      }
+    }
+  }
+}
