@@ -99,7 +99,14 @@ export default function TicketForm(): JSX.Element {
       values.id = 0;
 
       const payload = {
-        submitData: values,
+        submitData: {
+          id: 0,
+          maPhong,
+          ngayDen: ngayDen.format("YYYY-MM-DD"),
+          ngayDi: ngayDi.format("YYYY-MM-DD"),
+          soLuongKhach,
+          maNguoiDung,
+        },
         callback: navigate,
         destination: "admin/booking-management",
       };
