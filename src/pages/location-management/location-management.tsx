@@ -118,7 +118,7 @@ export default function LocationManagement(): JSX.Element {
               <EditOutlined />
             </Link>
 
-            <a className="pl-4">
+            <a className="ml-4">
               <DeleteOutlined
                 onClick={() => {
                   dispatch(deleteLocationAction(+id));
