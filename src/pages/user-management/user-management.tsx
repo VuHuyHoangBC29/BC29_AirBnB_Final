@@ -178,7 +178,7 @@ export default function UserManagement(): JSX.Element {
               onClick={() => {
                 dispatch(deleteUserAction(parseInt(text)));
               }}
-              className="pl-4"
+              className="ml-4"
             >
               <DeleteOutlined />
             </a>
