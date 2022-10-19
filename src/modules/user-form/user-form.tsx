@@ -84,6 +84,16 @@ export default function UserForm(): JSX.Element {
     }
   }, [userDetail]);
 
+  let allowedDateFormats = [
+    "DD/MM/YYYY",
+    "D/M/YYYY",
+    "DD.MM.YYYY",
+    "D.M.YYYY",
+    "DD. MM. YYYY",
+    "D. M. YYYY",
+    "DD-MM-YYYY",
+  ];
+
   const onChange: DatePickerProps["onChange"] = (date, dateString) => {
     console.log(moment(date).format("DD/MM/YYYY"));
   };
@@ -101,7 +111,7 @@ export default function UserForm(): JSX.Element {
             name,
             email,
             phone,
-            birthday: birthday.format("DD/MM/YYYY"),
+            birthday: birthday.format("MM/DD/YYYY"),
             gender,
             role,
           },
@@ -122,7 +132,7 @@ export default function UserForm(): JSX.Element {
           email,
           password,
           phone,
-          birthday: birthday.format("DD/MM/YYYY"),
+          birthday: birthday.format("MM/DD/YYYY"),
           gender,
           role,
         },
@@ -248,7 +258,7 @@ export default function UserForm(): JSX.Element {
             },
           ]}
         >
-          <DatePicker onChange={onChange} />
+          <DatePicker onChange={onChange} format={allowedDateFormats} />
         </Form.Item>
 
         <Form.Item

@@ -21,7 +21,7 @@ export const updateTicketAction = createAsyncThunk(
       message: "Cập nhật vé thành công!",
     });
 
-    data.callback(`/${data.destinaton}`);
+    data.callback(`/${data.destination}`);
 
     return response.data.content;
   }

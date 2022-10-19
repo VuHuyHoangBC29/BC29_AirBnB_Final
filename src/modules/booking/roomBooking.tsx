@@ -131,6 +131,7 @@ export default function RoomBooking() {
         maNguoiDung: userInfo!.id,
       },
       callback: navigate,
+      destination: "home",
     };
 
     dispatch(bookTicketAction(payload));

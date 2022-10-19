@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { notification } from "antd";
 import { useNavigate } from "react-router-dom";
 import {
-  BookTicket,
+  BookTicketThunk,
   deleteTicketByUserThunk,
   Ticket,
 } from "../../interfaces/ticket";
@@ -33,14 +33,14 @@ export const fetchTicketsListByUserAction = createAsyncThunk(
 
 export const bookTicketAction = createAsyncThunk(
   "ticketsList/bookTicket",
-  async (data: BookTicket) => {
+  async (data: BookTicketThunk) => {
     const response = await bookTicketApi(data.submitData);
 
     notification.success({
       message: "Đặt vé thành công!",
     });
 
-    data.callback("/");
+    data.callback(`/${data.destination}`);
 
     return response.data.content;
   }

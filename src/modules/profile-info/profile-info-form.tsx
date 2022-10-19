@@ -26,6 +26,16 @@ export default function ProfileInfoForm(): JSX.Element {
 
   const [form] = Form.useForm();
 
+  let allowedDateFormats = [
+    "DD/MM/YYYY",
+    "D/M/YYYY",
+    "DD.MM.YYYY",
+    "D.M.YYYY",
+    "DD. MM. YYYY",
+    "D. M. YYYY",
+    "DD-MM-YYYY",
+  ];
+
   //Modal function
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -79,7 +89,7 @@ export default function ProfileInfoForm(): JSX.Element {
           name,
           email,
           phone,
-          birthday: birthday.format("DD/MM/YYYY"),
+          birthday: birthday.format("MM/DD/YYYY"),
           gender,
           role: userDetail!.role,
         },
@@ -318,6 +328,7 @@ export default function ProfileInfoForm(): JSX.Element {
               ]}
             >
               <DatePicker
+              format={allowedDateFormats} 
               //  onChange={onChange}
               />
             </Form.Item>

@@ -4,12 +4,15 @@ import AdminGuard from "../guards/admin.guard";
 import AuthGuard from "../guards/auth-guard";
 import NoAuthGuard from "../guards/no-auth.guard";
 import RoomForm from "../modules/room-form/room-form";
+import BookingManagement from "../pages/booking-management/booking-management";
 import Booking from "../pages/booking/booking";
 import CreateLocation from "../pages/create-location/create-location";
 import CreateRoom from "../pages/create-room/create-room";
+import CreateTicket from "../pages/create-ticket/create-ticket";
 import CreateUser from "../pages/create-user/create-user";
 import EditLocation from "../pages/edit-location/edit-location";
 import EditRoom from "../pages/edit-room/edit-room";
+import EditTicket from "../pages/edit-ticket/edit-ticket";
 import EditUser from "../pages/edit-user/edit-user";
 import Home from "../pages/home/home";
 import LocationManagement from "../pages/location-management/location-management";
@@ -126,6 +129,18 @@ export default function Router() {
             {
               path: "/admin/room-management/:id/edit-room",
               element: <EditRoom />,
+            },
+            {
+              path: "/admin/booking-management",
+              element: <BookingManagement />,
+            },
+            {
+              path: "/admin/booking-management/create-ticket",
+              element: <CreateTicket />,
+            },
+            {
+              path: "/admin/booking-management/:id/edit-ticket",
+              element: <EditTicket />,
             },
           ],
         },

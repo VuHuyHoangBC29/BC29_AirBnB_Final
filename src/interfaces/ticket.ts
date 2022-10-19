@@ -9,9 +9,10 @@ export interface Ticket {
   hinhAnh?: string;
 }
 
-export interface BookTicket {
+export interface BookTicketThunk {
   submitData: Ticket;
   callback: Function;
+  destination: string;
 }
 
 export interface UpdateTicketApi {
@@ -29,7 +30,7 @@ export interface UpdateTicketApi {
 export interface UpdateTicketThunk {
   submitData: UpdateTicketApi;
   callback: Function;
-  destinaton: string;
+  destination: string;
 }
 
 export interface deleteTicketByUserThunk {
