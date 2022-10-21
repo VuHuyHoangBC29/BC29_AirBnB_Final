@@ -13,8 +13,6 @@ export const fetchLocationsListAction = createAsyncThunk(
   async () => {
     const response = await fetchLocationsListApi();
 
-    console.log(response);
-
     return response.data.content;
   }
 );
@@ -55,10 +53,12 @@ export const deleteLocationAction = createAsyncThunk(
 
 interface LocationsListState {
   locationsList: Location[];
+  loading: "pending" | "succeeded";
 }
 
 const INITIAL_STATE: LocationsListState = {
   locationsList: [],
+  loading: "pending",
 };
 
 const locationsListSlice = createSlice({
@@ -67,10 +67,17 @@ const locationsListSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(
+      fetchLocationsListAction.pending,
+      (state: LocationsListState) => {
+        state.loading = "pending";
+      }
+    );
+    builder.addCase(
       fetchLocationsListAction.fulfilled,
       (state: LocationsListState, action: PayloadAction<Location[]>) => {
-        console.log("fulfilled");
         state.locationsList = action.payload;
+
+        state.loading = "succeeded";
       }
     );
     builder.addCase(

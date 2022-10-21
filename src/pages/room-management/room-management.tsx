@@ -1,6 +1,6 @@
 import { Table, Input, Space, Button } from "antd";
 import type { ColumnsType, TableProps } from "antd/es/table";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   EditOutlined,
   SolutionOutlined,
@@ -13,20 +13,34 @@ import { AppDispatch, RootState } from "../../store/store";
 import { fetchRoomsListAction } from "../../store/reducers/roomsListReducer";
 import { deleteRoomAction } from "../../store/reducers/roomsListReducer";
 import { roomDetailsActions } from "../../store/reducers/roomDetailsReducer";
+import { LoadingContext } from "../../context/loading.context";
 
 export default function RoomManagement(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
 
   const [searchState, setSearchState] = useState<DataType[]>([]);
 
+  const { loading } = useSelector((state: RootState) => state.roomsListReducer);
+
+  const { roomsList } = useSelector(
+    (state: RootState) => state.roomsListReducer
+  );
+
+  const { isLoading, setIsLoading } = useContext(LoadingContext);
+
   useEffect(() => {
     dispatch(fetchRoomsListAction());
     dispatch(roomDetailsActions.handleRemoveRoomDetails(null));
   }, []);
 
-  const { roomsList } = useSelector(
-    (state: RootState) => state.roomsListReducer
-  );
+  useEffect(() => {
+    console.log(loading);
+    if (loading === "pending") {
+      setIsLoading({ isLoading: true, setIsLoading });
+    } else {
+      setIsLoading({ isLoading: false, setIsLoading });
+    }
+  }, [loading, setIsLoading]);
 
   const navigate = useNavigate();
 

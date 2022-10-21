@@ -1,6 +1,6 @@
 import { Table, Input, Space, Button } from "antd";
 import type { ColumnsType, TableProps } from "antd/es/table";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   deleteUserAction,
   fetchUsersSearchListAction,
@@ -20,29 +20,34 @@ import {
 } from "../../store/reducers/usersListReducer";
 import { userDetailsActions } from "../../store/reducers/userDetailsReducer";
 import { User } from "../../interfaces/user";
+import { LoadingContext } from "../../context/loading.context";
 
 export default function UserManagement(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
 
-  const [pageCurrent, setPageCurrent] = useState<number>(1);
-
   const [searchState, setSearchState] = useState<DataType[]>([]);
+
+  const { loading } = useSelector((state: RootState) => state.usersListReducer);
 
   const { usersList } = useSelector(
     (state: RootState) => state.usersListReducer
   );
 
-  // useEffect(() => {
-  //   dispatch(fetchUsersListByPageAction(1));
-  //   dispatch(userDetailsActions.handleRemoveUserDetail(null));
-  // }, []);
+  const { isLoading, setIsLoading } = useContext(LoadingContext);
 
   useEffect(() => {
     dispatch(fetchUsersListAction());
     dispatch(userDetailsActions.handleRemoveUserDetail(null));
   }, []);
 
-  console.log(usersList);
+  useEffect(() => {
+    console.log(loading);
+    if (loading === "pending") {
+      setIsLoading({ isLoading: true, setIsLoading });
+    } else {
+      setIsLoading({ isLoading: false, setIsLoading });
+    }
+  }, [loading, setIsLoading]);
 
   const navigate = useNavigate();
 
@@ -80,7 +85,6 @@ export default function UserManagement(): JSX.Element {
     id: number;
     name: string;
     email: string;
-    password: string | null;
     phone: number | null;
     birthday: string;
     avatar: string | null;
@@ -126,12 +130,6 @@ export default function UserManagement(): JSX.Element {
       dataIndex: "email",
       width: "10%",
       defaultSortOrder: "descend",
-    },
-
-    {
-      title: "Password",
-      dataIndex: "password",
-      width: "5%",
     },
 
     {
@@ -195,7 +193,6 @@ export default function UserManagement(): JSX.Element {
       id: ele.id,
       name: ele.name,
       email: ele.email,
-      password: ele.password,
       phone: ele.phone,
       birthday: ele.birthday,
       avatar: ele.avatar,
@@ -204,8 +201,6 @@ export default function UserManagement(): JSX.Element {
       tuongTac: ele.id,
     };
   });
-
-  console.log(data);
 
   const onSearch = (value: string) => {
     console.log(value);

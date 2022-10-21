@@ -1,6 +1,6 @@
 import { Table, Input, Space, Button } from "antd";
 import type { ColumnsType, TableProps } from "antd/es/table";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   EditOutlined,
   SolutionOutlined,
@@ -14,22 +14,39 @@ import { fetchLocationsListAction } from "../../store/reducers/locationsListRedu
 import { locationDetailsActions } from "../../store/reducers/locationDetailsReducer";
 import { deleteLocationAction } from "../../store/reducers/locationsListReducer";
 import Search from "antd/lib/input/Search";
+import { LoadingContext } from "../../context/loading.context";
 
 export default function LocationManagement(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
 
   const [searchState, setSearchState] = useState<DataType[]>([]);
 
+  const { loading } = useSelector(
+    (state: RootState) => state.locationsListReducer
+  );
+
   const { locationsList } = useSelector(
     (state: RootState) => state.locationsListReducer
   );
+
+  const { isLoading, setIsLoading } = useContext(LoadingContext);
 
   useEffect(() => {
     dispatch(fetchLocationsListAction());
     dispatch(locationDetailsActions.handleRemoveLocationDetail(null));
   }, []);
 
+  useEffect(() => {
+    console.log(loading);
+    if (loading === "pending") {
+      setIsLoading({ isLoading: true, setIsLoading });
+    } else {
+      setIsLoading({ isLoading: false, setIsLoading });
+    }
+  }, [loading, setIsLoading]);
+
   const navigate = useNavigate();
+
   const [loadings, setLoadings] = useState<boolean[]>([]);
   const enterLoading = (index: number) => {
     setLoadings((prevLoadings) => {
@@ -150,7 +167,7 @@ export default function LocationManagement(): JSX.Element {
         ele.tinhThanh
           .toLowerCase()
           .trim()
-          .indexOf(value.toLowerCase().trim()) !== -1 
+          .indexOf(value.toLowerCase().trim()) !== -1
         // ele.tenViTri
         //   .toLowerCase()
         //   .trim()

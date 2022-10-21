@@ -1,6 +1,6 @@
 import { Table, Input, Space, Button } from "antd";
 import type { ColumnsType, TableProps } from "antd/es/table";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   EditOutlined,
   SolutionOutlined,
@@ -15,18 +15,34 @@ import {
   fetchTicketsListAction,
 } from "../../store/reducers/ticketsListReducer";
 import { ticketDetailsActions } from "../../store/reducers/ticketDetailsReducer";
+import { LoadingContext } from "../../context/loading.context";
 
 export default function BookingManagement(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
+
+  const { loading } = useSelector(
+    (state: RootState) => state.ticketsListReducer
+  );
 
   const { ticketsList } = useSelector(
     (state: RootState) => state.ticketsListReducer
   );
 
+  const { isLoading, setIsLoading } = useContext(LoadingContext);
+
   useEffect(() => {
     dispatch(fetchTicketsListAction());
     dispatch(ticketDetailsActions.handleRemoveTicketDetails(null));
   }, []);
+
+  useEffect(() => {
+    console.log(loading);
+    if (loading === "pending") {
+      setIsLoading({ isLoading: true, setIsLoading });
+    } else {
+      setIsLoading({ isLoading: false, setIsLoading });
+    }
+  }, [loading, setIsLoading]);
 
   const navigate = useNavigate();
   const [loadings, setLoadings] = useState<boolean[]>([]);

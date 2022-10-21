@@ -78,10 +78,12 @@ export const deleteTicketByUserAction = createAsyncThunk(
 
 interface TicketsListState {
   ticketsList: Ticket[];
+  loading: "pending" | "succeeded";
 }
 
 const INITIAL_STATE: TicketsListState = {
   ticketsList: [],
+  loading: "pending",
 };
 
 const ticketsListSlice = createSlice({
@@ -90,9 +92,17 @@ const ticketsListSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(
+      fetchTicketsListAction.pending,
+      (state: TicketsListState) => {
+        state.loading = "pending";
+      }
+    );
+    builder.addCase(
       fetchTicketsListAction.fulfilled,
       (state: TicketsListState, action: PayloadAction<Ticket[]>) => {
         state.ticketsList = action.payload;
+
+        state.loading = "succeeded";
       }
     );
     builder.addCase(

@@ -17,7 +17,6 @@ export const fetchUsersListAction = createAsyncThunk(
   async () => {
     const response = await fetchUsersListApi();
 
-    // console.log(response);
     return response.data.content;
   }
 );
@@ -26,7 +25,7 @@ export const fetchUsersListByPageAction = createAsyncThunk(
   "userList/fetchUsersList",
   async (page: number) => {
     const response = await fetchUsersListByPageApi(page);
-    // console.log(response);
+    
     return response.data.content.data;
   }
 );
@@ -68,10 +67,12 @@ export const deleteUserAction = createAsyncThunk(
 
 interface UsersListState {
   usersList: User[];
+  loading: "pending" | "succeeded";
 }
 
 const INITIAL_STATE: UsersListState = {
   usersList: [],
+  loading: "pending",
 };
 
 const usersListSlice = createSlice({
@@ -79,10 +80,14 @@ const usersListSlice = createSlice({
   initialState: INITIAL_STATE,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(fetchUsersListAction.pending, (state: UsersListState) => {
+      state.loading = "pending";
+    });
     builder.addCase(
       fetchUsersListAction.fulfilled,
       (state: UsersListState, action: PayloadAction<User[]>) => {
         state.usersList = action.payload;
+        state.loading = "succeeded";
       }
     );
     // builder.addCase(
@@ -97,12 +102,17 @@ const usersListSlice = createSlice({
         state.usersList = action.payload;
       }
     );
+    builder.addCase(createUserAction.pending, (state: UsersListState) => {
+      state.loading = "pending";
+    });
     builder.addCase(
       createUserAction.fulfilled,
       (state: UsersListState, action: PayloadAction<User>) => {
         let newUsersList = [...state.usersList];
 
         newUsersList.push(action.payload);
+
+        state.loading = "succeeded";
       }
     );
     builder.addCase(

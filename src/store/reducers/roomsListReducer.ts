@@ -12,8 +12,6 @@ export const fetchRoomsListAction = createAsyncThunk(
   async () => {
     const response = await fetchRoomsListApi();
 
-    console.log(response);
-
     return response.data.content;
   }
 );
@@ -22,8 +20,6 @@ export const createRoomAction = createAsyncThunk(
   "roomsList/createRoom",
   async (data: CreateRoomThunk) => {
     const response = await createRoomApi(data.submitData);
-
-    console.log(response);
 
     notification.success({
       message: "Thêm phòng thành công!",
@@ -48,10 +44,12 @@ export const deleteRoomAction = createAsyncThunk(
 
 interface RoomsListState {
   roomsList: Room[];
+  loading: "pending" | "succeeded";
 }
 
 const INITIAL_STATE: RoomsListState = {
   roomsList: [],
+  loading: "pending",
 };
 
 const roomsListSlice = createSlice({
@@ -59,11 +57,15 @@ const roomsListSlice = createSlice({
   initialState: INITIAL_STATE,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(fetchRoomsListAction.pending, (state: RoomsListState) => {
+      state.loading = "pending";
+    });
     builder.addCase(
       fetchRoomsListAction.fulfilled,
       (state: RoomsListState, action: PayloadAction<Room[]>) => {
-        console.log("fulfilled");
         state.roomsList = action.payload;
+
+        state.loading = "succeeded";
       }
     );
     builder.addCase(
